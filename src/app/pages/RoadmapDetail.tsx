@@ -21,10 +21,9 @@ export function RoadmapDetail() {
       if (!id) return;
       setLoading(true);
       try {
-        const [rmData, customData] = await Promise.all([
-          api.getRoadmap(id),
-          user ? api.getCustomNodes(id) : Promise.resolve([])
-        ]);
+        const rmData = await api.getRoadmap(id);
+        
+        const customData = user ? await api.getCustomNodes(rmData.id) : [];
         
         setRoadmap(rmData);
         setCustomNodes(customData);
@@ -53,11 +52,17 @@ export function RoadmapDetail() {
       return;
     }
     const newStatus = !currentStatus;
+
+    // Optimistic UI update for instant feedback
+    setProgressMap(prev => ({ ...prev, [nodeId]: newStatus }));
+
     try {
       await api.toggleProgress(roadmap.id, nodeId, newStatus);
-      setProgressMap(prev => ({ ...prev, [nodeId]: newStatus }));
     } catch (err) {
-      alert("Failed to update progress.");
+      console.error("API error toggling progress", err);
+      // Revert the optimistic update if backend fails
+      setProgressMap(prev => ({ ...prev, [nodeId]: currentStatus }));
+      alert("Failed to sync progress. Please check your connection.");
     }
   };
 
