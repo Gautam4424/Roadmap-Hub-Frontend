@@ -21,10 +21,10 @@ export const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_KEY);
 
 export const login = async (email: string, password: string): Promise<User | null> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/token`, {
+    const response = await fetch(`${API_BASE_URL}/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ username: email, password }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
     });
 
     if (!response.ok) return null;
@@ -33,7 +33,7 @@ export const login = async (email: string, password: string): Promise<User | nul
     localStorage.setItem(ACCESS_TOKEN_KEY, data.access_token);
     localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh_token);
 
-    // Fetch user details via Gateway
+    // Fetch user details via Gateway 
     const user = await fetchUserDetails(data.access_token);
     if (user) {
       localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
@@ -66,8 +66,17 @@ export const register = async (username: string, email: string, password: string
 
 const fetchUserDetails = async (token: string): Promise<User | null> => {
   try {
+    const valRes = await fetch(`${API_BASE_URL}/validate`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!valRes.ok) return null;
+    const valData = await valRes.json();
+
     const meRes = await fetch(`${API_BASE_URL}/me`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'X-User-ID': valData.user_id
+      },
     });
     if (!meRes.ok) return null;
     return await meRes.json();
