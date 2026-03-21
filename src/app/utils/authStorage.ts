@@ -5,11 +5,12 @@ export interface User {
   is_admin: boolean;
 }
 
-const ACCESS_TOKEN_KEY = 'sf_access_token';
+const ACCESS_TOKEN_KEY = 'token'; // Align with api.ts
 const REFRESH_TOKEN_KEY = 'sf_refresh_token';
 const USER_DATA_KEY = 'sf_user_data';
 
-const API_BASE_URL = 'http://localhost:8001/api/v1/auth';
+// Use API GATEWAY (Port 8000)
+const API_BASE_URL = 'http://localhost:8000/api/v1/auth';
 
 export const getCurrentAuthUser = (): User | null => {
   const userStr = localStorage.getItem(USER_DATA_KEY);
@@ -20,10 +21,10 @@ export const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_KEY);
 
 export const login = async (email: string, password: string): Promise<User | null> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/login`, {
+    const response = await fetch(`${API_BASE_URL}/token`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ username: email, password }),
     });
 
     if (!response.ok) return null;
@@ -32,7 +33,7 @@ export const login = async (email: string, password: string): Promise<User | nul
     localStorage.setItem(ACCESS_TOKEN_KEY, data.access_token);
     localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh_token);
 
-    // Fetch user details
+    // Fetch user details via Gateway
     const user = await fetchUserDetails(data.access_token);
     if (user) {
       localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
@@ -55,17 +56,8 @@ export const register = async (username: string, email: string, password: string
 
     if (!response.ok) return null;
 
-    const data = await response.json();
-    localStorage.setItem(ACCESS_TOKEN_KEY, data.access_token);
-    localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh_token);
-
-    // Fetch user details
-    const user = await fetchUserDetails(data.access_token);
-    if (user) {
-      localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
-      return user;
-    }
-    return null;
+    // After register, we should login to get the token
+    return await login(email, password);
   } catch (error) {
     console.error('Register error:', error);
     return null;
@@ -74,14 +66,8 @@ export const register = async (username: string, email: string, password: string
 
 const fetchUserDetails = async (token: string): Promise<User | null> => {
   try {
-    const validateRes = await fetch(`${API_BASE_URL}/validate`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!validateRes.ok) return null;
-    const valData = await validateRes.json();
-
     const meRes = await fetch(`${API_BASE_URL}/me`, {
-      headers: { 'X-User-ID': valData.user_id },
+      headers: { Authorization: `Bearer ${token}` },
     });
     if (!meRes.ok) return null;
     return await meRes.json();
