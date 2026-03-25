@@ -3,6 +3,7 @@ import { getCurrentAuthUser, User, logout as authLogout, login as authLogin } fr
 
 interface AuthContextType {
   user: User | null;
+  loading: boolean;
   login: (user: User) => void;
   logout: () => void;
 }
@@ -11,9 +12,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setUser(getCurrentAuthUser());
+    const savedUser = getCurrentAuthUser();
+    if (savedUser) setUser(savedUser);
+    setLoading(false);
   }, []);
 
   const login = (userData: User) => {
@@ -26,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

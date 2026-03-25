@@ -1,3 +1,118 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+@import './hud.css';
+
+:root {
+  /* Lush & Creamy Brand Palette */
+  --primary: #10b981;  /* Emerald */
+  --primary-glow: rgba(16, 185, 129, 0.2);
+  --secondary: #059669; /* Darker Emerald */
+  --accent: #f59e0b;    /* Amber Accent */
+  
+  --glass-effect: blur(16px) saturate(140%);
+}
+
+/* Lush Mode (Default/Light) */
+:root,
+[data-theme='light'] {
+  --bg-main: #fcfcf9;     /* Creamy Bone */
+  --bg-sidebar: #ffffff;
+  --bg-card: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.75);
+  --border-main: rgba(16, 185, 129, 0.1);
+
+  --text-main: #064e3b;   /* Deep Forest Green */
+  --text-muted: #4b5563;  /* Muted Slate */
+  --text-inverse: #ffffff;
+
+  --background: #fcfcf9;
+  --foreground: #064e3b;
+  
+  --shadow-premium: 0 20px 50px -12px rgba(16, 185, 129, 0.1);
+}
+
+/* Creamy Dark Mode */
+.dark,
+[data-theme='dark'] {
+  --bg-main: #061a15;     /* Dark Forest */
+  --bg-sidebar: #052c24;
+  --bg-card: #0a332a;
+  --bg-glass: rgba(10, 51, 42, 0.8);
+  --border-main: rgba(16, 185, 129, 0.15);
+
+  --text-main: #ecfdf5;   /* Mint White */
+  --text-muted: #94a3b8;
+  --text-inverse: #061a15;
+
+  --background: #061a15;
+  --foreground: #ecfdf5;
+  
+  --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+body {
+  background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  @apply antialiased selection:bg-emerald-500/30 selection:text-emerald-900;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Premium Scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-main);
+  border-radius: 20px;
+  border: 4px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 5px rgba(16, 185, 129, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+  }
+
+  100% {
+    box-shadow: 0 0 5px rgba(16, 185, 129, 0.2);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s infinite;
+}

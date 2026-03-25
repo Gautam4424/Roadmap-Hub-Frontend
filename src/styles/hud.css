@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Premium Glass Utility - Lush & Creamy Edition */
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-effect);
+  -webkit-backdrop-filter: var(--glass-effect);
+  border: 1px solid var(--border-main);
+  box-shadow: 
+    0 10px 40px -10px rgba(16, 185, 129, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.glass-emerald {
+  background: rgba(16, 185, 129, 0.04);
+  backdrop-filter: var(--glass-effect);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.1);
+}
+
+.glass-cyan {
+  background: rgba(16, 185, 129, 0.03); /* Shifted to match Lush theme */
+  backdrop-filter: var(--glass-effect);
+  border: 1px solid rgba(16, 185, 129, 0.1);
+  box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-main);
+  border-radius: 10px;
+}

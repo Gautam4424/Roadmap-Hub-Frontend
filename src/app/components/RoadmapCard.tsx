@@ -11,35 +11,38 @@ export function RoadmapCard({ roadmap }: RoadmapCardProps) {
 
   return (
     <Link
-      to={`/roadmap/${linkId}`}
-      className="block bg-white rounded-3xl border-2 border-gray-100 hover:border-blue-500 hover:shadow-2xl transition-all duration-300 overflow-hidden group h-full"
+      to={`/roadmaps/${linkId}`}
+      className="block bg-[var(--bg-card)] rounded-[2.5rem] border border-[var(--border-main)] hover:border-emerald-500/40 hover:shadow-[0_40px_80px_rgba(16,185,129,0.1)] transition-all duration-500 overflow-hidden group h-full relative"
     >
-      <div className="p-8 flex flex-col h-full">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      
+      <div className="p-10 flex flex-col h-full relative z-10">
         <div className="flex-1">
-            <h3 className="text-2xl font-black text-gray-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight">
+            <div className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.3em] mb-3 font-mono opacity-60 group-hover:opacity-100 transition-opacity">PROTOCOL NEURAL_LINK</div>
+            <h3 className="text-3xl font-black text-[var(--text-main)] mb-4 group-hover:text-emerald-600 transition-colors tracking-tighter leading-tight">
               {roadmap.title}
             </h3>
-            <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3">
+            <p className="text-[var(--text-muted)] text-[15px] leading-relaxed mb-8 line-clamp-3 font-medium">
               {roadmap.description}
             </p>
         </div>
 
-        <div className="pt-6 border-t border-gray-100 mt-auto">
-          <div className="flex items-center gap-6 text-xs font-bold text-gray-400 uppercase tracking-widest">
-            <div className="flex items-center gap-2">
-              <BookOpen size={16} className="text-blue-600"/>
+        <div className="pt-8 border-t border-[var(--border-main)] mt-auto">
+          <div className="flex items-center gap-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
+            <div className="flex items-center gap-3">
+              <BookOpen size={16} className="text-emerald-500"/>
               <span>Topic Track</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock size={16} className="text-purple-600"/>
+            <div className="flex items-center gap-3">
+              <Clock size={16} className="text-teal-500"/>
               <span>{roadmap.estimated_hours || 40}h</span>
             </div>
           </div>
           
-          <div className="mt-6 flex items-center justify-between">
-              <span className="text-[10px] bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-black">EXPERT VERIFIED</span>
-              <div className="flex items-center gap-1 text-blue-600 group-hover:translate-x-1 transition-transform">
-                  <span className="text-xs font-black">VIEW PATH</span>
+          <div className="mt-8 flex items-center justify-between">
+              <span className="text-[9px] bg-emerald-500/10 text-emerald-600 px-4 py-1.5 rounded-full font-black border border-emerald-500/20 uppercase tracking-widest">EXPERT VERIFIED</span>
+              <div className="flex items-center gap-2 text-emerald-600 group-hover:translate-x-1 transition-transform">
+                  <span className="text-[10px] font-black uppercase tracking-widest">VIEW PATH</span>
                   <TrendingUp size={14}/>
               </div>
           </div>
